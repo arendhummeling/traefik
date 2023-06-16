@@ -134,6 +134,10 @@ func (p *Provider) watchKv(ctx context.Context, configurationChan chan<- dynamic
 }
 
 func (p *Provider) buildConfiguration(ctx context.Context) (*dynamic.Configuration, error) {
+	if "" == p.RootKey {
+		log.FromContext(ctx).Warnf("The given rootKey is an empty string")
+	}
+
 	pairs, err := p.kvClient.List(ctx, p.RootKey, nil)
 	if err != nil {
 		return nil, err
